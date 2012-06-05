@@ -7,6 +7,12 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.converter.FactoryConvertI;
+import model.converter.IConvert;
+import model.dataStore.ADS;
+import model.dataStore.DSFactory;
+import model.except.ExtenException;
+import model.person.Person;
 
 
 public class LoadCommand implements iCommand{
@@ -18,22 +24,26 @@ public class LoadCommand implements iCommand{
     
     @Override
     public void execute() {
-        BufferedReader in;
+        List<Person> lst = null;
+        
+        
         PrintWriter out = new PrintWriter(outStream, true /* autoFlush */);
         try {
-            in = new BufferedReader(new FileReader("11.json"));
-            String s;
-
-            while((s=in.readLine())!=null){   
-                out.println(s);
+            //*** read from file
+            lst = DSFactory.getInstance("storage.xml").load();
+            System.out.println(lst);
+            System.out.println("*****************");
+            //*** send list
+            for(int i=0; i<lst.size(); i++){
+                String type = lst.get(i).getClass().getSimpleName();
+                out.println(FactoryConvertI.getInstance("json", type).toString(lst.get(i)));
             }
-           out.close(); 
-           in.close();  
-       
-        } catch (FileNotFoundException ex) {
+           out.close();  
+        } 
+        catch (IOException ex){
             Logger.getLogger(LoadCommand.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch (IOException ex) {
+        catch (ExtenException ex){
             Logger.getLogger(LoadCommand.class.getName()).log(Level.SEVERE, null, ex);
         }
 

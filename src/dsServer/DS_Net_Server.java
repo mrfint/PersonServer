@@ -13,9 +13,11 @@ import java.util.logging.Logger;
 
 class DS_Net_Server extends Thread {
     private final Socket incoming;
+    public static String fileName;
     
     DS_Net_Server(Socket accept) {
         incoming = accept;
+        fileName = "store.json";
     }
 
     @Override
