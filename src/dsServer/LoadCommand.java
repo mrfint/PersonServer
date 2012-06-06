@@ -30,20 +30,17 @@ public class LoadCommand implements iCommand{
         PrintWriter out = new PrintWriter(outStream, true /* autoFlush */);
         try {
             //*** read from file
-            lst = DSFactory.getInstance("storage.xml").load();
-            System.out.println(lst);
-            System.out.println("*****************");
+            lst = DSFactory.getInstance().load();
+            
             //*** send list
             for(int i=0; i<lst.size(); i++){
                 String type = lst.get(i).getClass().getSimpleName();
                 out.println(FactoryConvertI.getInstance("json", type).toString(lst.get(i)));
             }
-           out.close();  
+            
+            out.close();  
         } 
         catch (IOException ex){
-            Logger.getLogger(LoadCommand.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (ExtenException ex){
             Logger.getLogger(LoadCommand.class.getName()).log(Level.SEVERE, null, ex);
         }
 

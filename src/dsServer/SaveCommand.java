@@ -28,11 +28,8 @@ public class SaveCommand implements iCommand{
         List<Person> lst = parseDate();
         
         try {
-             DSFactory.getInstance("storage.xml").save(lst);
+             DSFactory.getInstance().save(lst);
         } 
-        catch (ExtenException ex) {
-            Logger.getLogger(SaveCommand.class.getName()).log(Level.SEVERE, null, ex);
-        }
         catch (IOException ex) {
                 Logger.getLogger(SaveCommand.class.getName()).log(Level.SEVERE, null, ex);
             }

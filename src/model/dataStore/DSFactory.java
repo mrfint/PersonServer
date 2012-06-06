@@ -8,7 +8,20 @@ public class DSFactory {
 
     private static Map mp = null;
 
-    public static ADS getInstance(String fName) throws ExtenException
+    public synchronized static ADS getInstance()
+    {   
+
+        if(mp==null)
+        {
+            init();
+        }
+
+        String fileExt = ADS.fName.substring(ADS.fName.lastIndexOf('.')+1).toLowerCase();
+        
+        return (ADS) mp.get(fileExt);
+    }
+    
+    public synchronized static ADS getInstance(String fName) throws ExtenException
     {   
 
         if(mp==null)
@@ -19,7 +32,7 @@ public class DSFactory {
         String fileExt = fName.substring(fName.lastIndexOf('.')+1).toLowerCase();
         
         
-        if(    (fileExt.equals("csv"))  || (fileExt.equals("xml"))  || (fileExt.equals("yaml"))
+        if (   (fileExt.equals("csv"))  || (fileExt.equals("xml"))  || (fileExt.equals("yaml"))
             || (fileExt.equals("json")) || (fileExt.equals("mock")) || (fileExt.equals("net"))
             || (fileExt.equals("db")) 
            )       
@@ -32,7 +45,7 @@ public class DSFactory {
         }
         return (ADS) mp.get(fileExt);
     }
-
+    
     private static void init() {
         mp = new HashMap<String, ADS>();  
             mp.put("csv", new DS_CSV());
@@ -42,6 +55,6 @@ public class DSFactory {
             mp.put("mock", new DS_Mock());
             mp.put("net", new DS_Net_Client());
             mp.put("db", new DS_DB());
-     
     }
+    
 }

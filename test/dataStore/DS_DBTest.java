@@ -17,7 +17,7 @@ import model.person.PList;
 
 public class DS_DBTest {
     
-    private PList lst=PersonMain.initList0();
+    private PList lst=PersonMain.initListM();
 
     @Test
     public void testMockMethod() throws IOException, ExtenException {
